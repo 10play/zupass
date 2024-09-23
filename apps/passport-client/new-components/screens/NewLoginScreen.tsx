@@ -1,5 +1,136 @@
+import { requestLogToServer } from "@pcd/passport-interface";
+import { validateEmail } from "@pcd/util";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { AppContainer } from "../../components/shared/AppContainer";
+import { appConfig } from "../../src/appConfig";
+import {
+  useDispatch,
+  useQuery,
+  useSelf,
+  useStateContext
+} from "../../src/appHooks";
+import {
+  pendingRequestKeys,
+  setPendingAddRequest,
+  setPendingAddSubscriptionRequest,
+  setPendingGenericIssuanceCheckinRequest,
+  setPendingGetWithoutProvingRequest,
+  setPendingProofRequest,
+  setPendingViewFrogCryptoRequest,
+  setPendingViewSubscriptionsRequest
+} from "../../src/sessionStorage";
+import { Typography } from "../shared/Typography";
 
 export const NewLoginScreen = (): JSX.Element => {
-  return <AppContainer bg="gray">Hi</AppContainer>;
+  const dispatch = useDispatch();
+  const state = useStateContext().getState();
+  const [error, setError] = useState<string | undefined>();
+  const query = useQuery();
+  const redirectedFromAction = query?.get("redirectedFromAction") === "true";
+
+  const pendingGetWithoutProvingRequest = query?.get(
+    pendingRequestKeys.getWithoutProving
+  );
+  const pendingAddRequest = query?.get(pendingRequestKeys.add);
+  const pendingProveRequest = query?.get(pendingRequestKeys.proof);
+  const pendingViewSubscriptionsRequest = query?.get(
+    pendingRequestKeys.viewSubscriptions
+  );
+  const pendingAddSubscriptionRequest = query?.get(
+    pendingRequestKeys.addSubscription
+  );
+  const pendingViewFrogCryptoRequest = query?.get(
+    pendingRequestKeys.viewFrogCrypto
+  );
+  const pendingGenericIssuanceCheckinRequest = query?.get(
+    pendingRequestKeys.genericIssuanceCheckin
+  );
+  useEffect(() => {
+    let pendingRequestForLogging: string | undefined = undefined;
+
+    if (pendingGetWithoutProvingRequest) {
+      setPendingGetWithoutProvingRequest(pendingGetWithoutProvingRequest);
+      pendingRequestForLogging = pendingRequestKeys.getWithoutProving;
+    } else if (pendingAddRequest) {
+      setPendingAddRequest(pendingAddRequest);
+      pendingRequestForLogging = pendingRequestKeys.add;
+    } else if (pendingProveRequest) {
+      setPendingProofRequest(pendingProveRequest);
+      pendingRequestForLogging = pendingRequestKeys.proof;
+    } else if (pendingViewSubscriptionsRequest) {
+      setPendingViewSubscriptionsRequest(pendingViewSubscriptionsRequest);
+      pendingRequestForLogging = pendingRequestKeys.viewSubscriptions;
+    } else if (pendingAddSubscriptionRequest) {
+      setPendingAddSubscriptionRequest(pendingAddSubscriptionRequest);
+      pendingRequestForLogging = pendingRequestKeys.addSubscription;
+    } else if (pendingViewFrogCryptoRequest) {
+      setPendingViewFrogCryptoRequest(pendingViewFrogCryptoRequest);
+      pendingRequestForLogging = pendingRequestKeys.viewFrogCrypto;
+    } else if (pendingGenericIssuanceCheckinRequest) {
+      setPendingGenericIssuanceCheckinRequest(
+        pendingGenericIssuanceCheckinRequest
+      );
+      pendingRequestForLogging = pendingRequestKeys.genericIssuanceCheckin;
+    }
+
+    if (pendingRequestForLogging) {
+      requestLogToServer(appConfig.zupassServer, "login-with-pending", {
+        pending: pendingRequestForLogging
+      });
+    }
+  }, [
+    pendingGetWithoutProvingRequest,
+    pendingAddRequest,
+    pendingProveRequest,
+    pendingViewSubscriptionsRequest,
+    pendingAddSubscriptionRequest,
+    pendingViewFrogCryptoRequest,
+    pendingGenericIssuanceCheckinRequest
+  ]);
+
+  const suggestedEmail = query?.get("email");
+
+  const self = useSelf();
+  const [email, setEmail] = useState(suggestedEmail ?? "");
+
+  const onGenPass = useCallback(
+    function (e: FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+      const trimmedEmail = email.trim();
+
+      if (trimmedEmail === "" || validateEmail(trimmedEmail) === false) {
+        setError("Enter a valid email address");
+      } else {
+        dispatch({
+          type: "new-passport",
+          email: trimmedEmail.toLocaleLowerCase("en-US")
+        });
+      }
+    },
+    [dispatch, email]
+  );
+
+  useEffect(() => {
+    // Redirect to home if already logged in
+    if (self) {
+      window.location.hash = "#/";
+    }
+  }, [self]);
+
+  return (
+    <AppContainer bg="gray">
+      <Typography fontSize={24} fontWeight={800} color="#1E2C50">
+        WELCOME TO ZUPASS
+      </Typography>
+      <Typography
+        fontSize={16}
+        fontWeight={400}
+        color="#1E2C50"
+        family="Neue Haas Unica"
+      >
+        Zupass is a zero knowledge application created by 0xPARC. It’s a
+        stepping stone towards building the next internet.
+      </Typography>
+    </AppContainer>
+  );
 };
