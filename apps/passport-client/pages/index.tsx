@@ -55,7 +55,7 @@ import {
 } from "../components/shared/AppContainer";
 import { useTsParticles } from "../components/shared/useTsParticles";
 import ComponentsScreen from "../new-components/ComponentsScreen";
-import { NewLogin } from "../new-components/screens/NewLogin";
+import { NewLogin } from "../new-components/screens/NewLoginScreen";
 import { appConfig } from "../src/appConfig";
 import { useIsDeletingAccount, useStateContext } from "../src/appHooks";
 import { useBackgroundJobs } from "../src/backgroundJobs";

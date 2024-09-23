@@ -1,16 +1,17 @@
+import { Spacer } from "@pcd/passport-ui";
 import { useRef, useState } from "react";
-import { CenterColumn, Spacer, TextCenter } from "../components/core";
-import { AppContainer } from "../components/shared/AppContainer";
-import { Avatar } from "./Avatar";
-import { Button2 } from "./Button";
-import { FloatingMenu } from "./FloatingMenu";
-import { Input2 } from "./Input";
-import { List } from "./List";
-import { Ticket } from "./Ticket";
-import { TicketCard } from "./TicketCard";
-import { SettingsBottomModal } from "./settingsBottomModal";
 import { FaTrashCan } from "react-icons/fa6";
-import { Accordion, AccordionRef } from "./Accordion";
+import { CenterColumn, TextCenter } from "../../components/core";
+import { AppContainer } from "../../components/shared/AppContainer";
+import { Accordion, AccordionRef } from "../shared/Accordion";
+import { Avatar } from "../shared/Avatar";
+import { Button2 } from "../shared/Button";
+import { FloatingMenu } from "../shared/FloatingMenu";
+import { Input2 } from "../shared/Input";
+import { List } from "../shared/List";
+import { Ticket } from "../shared/Ticket";
+import { TicketCard } from "../shared/TicketCard";
+import { SettingsBottomModal } from "../shared/settingsBottomModal";
 const exampleList = [
   {
     title: "Event Passes",
