@@ -55,6 +55,7 @@ import {
 } from "../components/shared/AppContainer";
 import { useTsParticles } from "../components/shared/useTsParticles";
 import ComponentsScreen from "../new-components/ComponentsScreen";
+import { NewLogin } from "../new-components/screens/NewLogin";
 import { appConfig } from "../src/appConfig";
 import { useIsDeletingAccount, useStateContext } from "../src/appHooks";
 import { useBackgroundJobs } from "../src/backgroundJobs";
@@ -130,6 +131,9 @@ function RouterImpl(): JSX.Element {
   return (
     <HashRouter>
       <Routes>
+        <Route path="/new">
+          <Route index element={<NewLogin />} />
+        </Route>
         <Route path="/">
           <Route path="terms" element={<TermsScreen />} />
           <Route index element={<HomeScreen />} />
