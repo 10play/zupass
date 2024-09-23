@@ -1,4 +1,4 @@
-import { useBottomModal } from "../src/appHooks";
+import { useBottomModal } from "../../src/appHooks";
 import { BottomModal } from "./BottomModal";
 
 export function SettingsBottomModal(): JSX.Element {
