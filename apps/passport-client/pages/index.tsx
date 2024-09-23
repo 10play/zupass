@@ -66,6 +66,7 @@ import { loadInitialState } from "../src/loadInitialState";
 import { registerServiceWorker } from "../src/registerServiceWorker";
 import { AppState, StateEmitter } from "../src/state";
 import { useZappServer } from "../src/zapp/useZappServer";
+import { NewTicketsScreen } from "../new-components/screens/NewTicketsScreen";
 
 enableLiveReload();
 
@@ -133,6 +134,7 @@ function RouterImpl(): JSX.Element {
       <Routes>
         <Route path="/new">
           <Route index element={<NewLoginScreen />} />
+          <Route path="tickets" element={<NewTicketsScreen />} />
         </Route>
         <Route path="/">
           <Route path="terms" element={<TermsScreen />} />
