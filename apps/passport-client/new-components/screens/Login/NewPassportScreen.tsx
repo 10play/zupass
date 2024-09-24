@@ -207,9 +207,13 @@ const SendEmailVerification = ({ email }: { email: string }): JSX.Element => {
           <BigInput2
             variant="primary"
             value={token}
-            onChange={(e): void => setToken(e.target.value.replace(/\D/g, ""))}
+            onChange={(e): void => {
+              setToken(e.target.value.replace(/\D/g, ""));
+              setError(undefined);
+            }}
             autoFocus
             placeholder="6 digit code"
+            error={error}
           />
           <Button2 variant="primary" disabled={loading} type="submit">
             {!loading ? "Verify" : "Verifying..."}

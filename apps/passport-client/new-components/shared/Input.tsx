@@ -60,6 +60,8 @@ export const BigInput2 = styled.input<{
 
 const ErrorContainer = styled.div`
   display: flex;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
   gap: 8px;
   justify-content: flex-start;
