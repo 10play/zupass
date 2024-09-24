@@ -14,7 +14,7 @@ import { appConfig } from "../../../src/appConfig";
 import { useDispatch, useIdentityV3, useQuery } from "../../../src/appHooks";
 import { err } from "../../../src/util";
 import { Button2 } from "../../shared/Button";
-import { BigInput2 } from "../../shared/Input";
+import { Input2 } from "../../shared/Input";
 import { ResendCodeButton2 } from "../../shared/ResendCodeButton";
 import { Typography } from "../../shared/Typography";
 import {
@@ -45,19 +45,13 @@ const SendEmailVerification = ({ email }: { email: string }): JSX.Element => {
   const dispatch = useDispatch();
   const [error, setError] = useState<string | undefined>();
   const [triedSendingEmail, setTriedSendingEmail] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
-  const [emailSending, setEmailSending] = useState(false);
+  const [_emailSent, setEmailSent] = useState(false);
+  const [_emailSending, setEmailSending] = useState(false);
   const [verifyingCode, setVerifyingCode] = useState(false);
   const [loadingAccount, setLoadingAccount] = useState(false);
   const [token, setToken] = useState("");
   const loading = verifyingCode || loadingAccount;
-  console.log({
-    verifyingCode,
-    loadingAccount,
-    emailSent,
-    emailSending,
-    loading
-  });
+
   const verifyToken = useCallback(
     async (token: string) => {
       if (verifyingCode || loadingAccount) return;
@@ -171,7 +165,7 @@ const SendEmailVerification = ({ email }: { email: string }): JSX.Element => {
   useEffect(() => {
     if (triedSendingEmail) return;
     setTriedSendingEmail(true);
-    // doRequestConfirmationEmail();
+    doRequestConfirmationEmail();
   }, [triedSendingEmail, doRequestConfirmationEmail]);
 
   // Verify the code the user entered.
@@ -182,8 +176,6 @@ const SendEmailVerification = ({ email }: { email: string }): JSX.Element => {
     },
     [verifyToken, token]
   );
-
-  let content = null;
 
   return (
     <AppContainer bg="gray" fullscreen>
@@ -203,8 +195,8 @@ const SendEmailVerification = ({ email }: { email: string }): JSX.Element => {
           </Typography>
         </LoginTitleContainer>
         <LoginForm onSubmit={onSubmit}>
-          <BigInput2 variant="primary" value={email} />
-          <BigInput2
+          <Input2 variant="primary" value={email} />
+          <Input2
             variant="primary"
             value={token}
             onChange={(e): void => {
