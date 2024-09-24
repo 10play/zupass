@@ -2,14 +2,14 @@ import { requestLogToServer } from "@pcd/passport-interface";
 import { validateEmail } from "@pcd/util";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { AppContainer } from "../../components/shared/AppContainer";
-import { appConfig } from "../../src/appConfig";
+import { AppContainer } from "../../../components/shared/AppContainer";
+import { appConfig } from "../../../src/appConfig";
 import {
   useDispatch,
   useQuery,
   useSelf,
   useStateContext
-} from "../../src/appHooks";
+} from "../../../src/appHooks";
 import {
   pendingRequestKeys,
   setPendingAddRequest,
@@ -19,10 +19,10 @@ import {
   setPendingProofRequest,
   setPendingViewFrogCryptoRequest,
   setPendingViewSubscriptionsRequest
-} from "../../src/sessionStorage";
-import { Button2 } from "../shared/Button";
-import { Input2 } from "../shared/Input";
-import { Typography } from "../shared/Typography";
+} from "../../../src/sessionStorage";
+import { Button2 } from "../../shared/Button";
+import { Input2 } from "../../shared/Input";
+import { Typography } from "../../shared/Typography";
 
 export const NewLoginScreen = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -108,7 +108,8 @@ export const NewLoginScreen = (): JSX.Element => {
         setLoading(true);
         dispatch({
           type: "new-passport",
-          email: trimmedEmail.toLocaleLowerCase("en-US")
+          email: trimmedEmail.toLocaleLowerCase("en-US"),
+          newUi: true
         });
       }
     },
@@ -125,7 +126,7 @@ export const NewLoginScreen = (): JSX.Element => {
   return (
     <AppContainer bg="gray" fullscreen>
       <LoginContainer>
-        <TitleContainer>
+        <LoginTitleContainer>
           <Typography fontSize={24} fontWeight={800} color="#1E2C50">
             WELCOME TO ZUPASS
           </Typography>
@@ -138,7 +139,7 @@ export const NewLoginScreen = (): JSX.Element => {
             Zupass is a zero knowledge application created by 0xPARC. It’s a
             stepping stone towards building the next internet.
           </Typography>
-        </TitleContainer>
+        </LoginTitleContainer>
         <LoginForm onSubmit={onGenPass}>
           <Input2
             autoCapitalize="off"
@@ -147,7 +148,10 @@ export const NewLoginScreen = (): JSX.Element => {
             autoFocus
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError(undefined);
+            }}
             error={error}
             disabled={loading}
           />
@@ -160,7 +164,7 @@ export const NewLoginScreen = (): JSX.Element => {
   );
 };
 
-const LoginContainer = styled.div`
+export const LoginContainer = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -168,16 +172,18 @@ const LoginContainer = styled.div`
   gap: 12px;
   align-items: center;
 `;
-const TitleContainer = styled.div`
+export const LoginTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  align-items: center;
+  align-items: flex-start;
   padding: 0px 12px;
+  text-align: left;
 `;
-const LoginForm = styled.form`
+export const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   gap: 8px;
   margin-bottom: 30px;

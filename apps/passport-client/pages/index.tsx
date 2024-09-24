@@ -55,7 +55,8 @@ import {
 } from "../components/shared/AppContainer";
 import { useTsParticles } from "../components/shared/useTsParticles";
 import ComponentsScreen from "../new-components/screens/ComponentsScreen";
-import { NewLoginScreen } from "../new-components/screens/NewLoginScreen";
+import { NewLoginScreen } from "../new-components/screens/Login/NewLoginScreen";
+import { NewPassportScreen2 } from "../new-components/screens/Login/NewPassportScreen";
 import { appConfig } from "../src/appConfig";
 import { useIsDeletingAccount, useStateContext } from "../src/appHooks";
 import { useBackgroundJobs } from "../src/backgroundJobs";
@@ -133,6 +134,7 @@ function RouterImpl(): JSX.Element {
       <Routes>
         <Route path="/new">
           <Route index element={<NewLoginScreen />} />
+          <Route path="new-passport" element={<NewPassportScreen2 />} />
         </Route>
         <Route path="/">
           <Route path="terms" element={<TermsScreen />} />
